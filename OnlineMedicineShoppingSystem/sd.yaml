@@ -2,20 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: onlinemedicineshoppingsystem-prod
+  name: medicialshopping-deployment
   labels:
        app: myapp
 spec:
   replicas: 1
   template:
     metadata:
-      name: onlinemedicineshoppingsystem-pod
+      name: medicalshopping-pod
       labels:
         app: myapp
     spec:
       containers:
         - name: onlinemedicineshoppingsystem
           image: vinay265/onlinemedicineshoppingsystem
+          command: [ "/bin/bash", "-ce", "tail -f /dev/null" ]
   selector:
     matchLabels:
       app: myapp
@@ -24,7 +25,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: onlinemedicinesystemservice
+  name: medicalsystem-service
 spec:
   type : NodePort
   ports:
