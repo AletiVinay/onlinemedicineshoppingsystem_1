@@ -1,35 +1,36 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: onlinemedicineshoppingsystem-deployment
+  name: onlinemedicineshoppingsystem-prod
+  labels:
+       app: myapp
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: onlinemedicineshoppingsystem
   template:
     metadata:
+      name: onlinemedicineshoppingsystem-pod
       labels:
-        app: onlinemedicineshoppingsystem
+        app: myapp
     spec:
       containers:
-      - name: onlinemedicineshoppingsystem
-        image: vinay265/onlinemedicineshoppingsystem
-        ports:
-        - name: http-port
-          containerPort: 8080
+        - name: onlinemedicineshoppingsystem
+          image: vinay265/onlinemedicineshoppingsystem
+  selector:
+    matchLabels:
+      app: myapp
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: onlinemedicineservice
+  name: appservice
 spec:
+  type : NodePort
   ports:
-  - port: 8080
-    nodePort: 33301
-    targetPort: http-port
-    protocol: TCP
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30001
   selector:
-    app: onlinemedicineshoppingsystem
-  type: NodePort
+    app: myapp
+
